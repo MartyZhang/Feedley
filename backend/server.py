@@ -11,15 +11,12 @@ import config
 
 app = Flask(__name__)
 
-# format the items array
-def format_ingredients(ingredients):
-    formatted_items = [x.replace(' ','%20') for x in ingredients]
-    return ','.join(formatted_items)
-
+# http://localhost:5000/getrecipes?items=chicken,tomato
 @app.route('/getrecipes', methods=['GET'])
 def get_recipes():
     response = request.args.get('items')
-    url = 'http://food2fork.com/api/search?key='+config.apiKEY+'&q='+str(format_ingredients(response))
+    items = str(response)
+    url = 'http://food2fork.com/api/search?key='+config.apiKEY+'&q='+items
     data = json.load(urllib2.urlopen(url))
     print url
     return jsonify({'recipes': data})
