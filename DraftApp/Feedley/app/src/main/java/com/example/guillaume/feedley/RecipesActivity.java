@@ -57,13 +57,23 @@ public class RecipesActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipes);
 
-        tvView = (TextView) findViewById(R.id.textView1);
-        tvView2 = (TextView) findViewById(R.id.textView2);
         Intent intent = getIntent();
+        String message = intent.getStringExtra(SearchActivity.EXTRA_MESSAGE);
+
+        // Create the text view
+        TextView textView = new TextView(this);
+        textView.setTextSize(40);
+        textView.setText(message);
+
+        // Set the text view as the activity layout
+        setContentView(textView);
+        //tvView2 = (TextView) findViewById(R.id.textView2);
+        //Intent intent = getIntent();
 
     }
+
+
 }
 
 

@@ -18,11 +18,13 @@ import android.view.KeyEvent;
 import android.view.View.OnKeyListener;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
 
 import static android.view.KeyEvent.KEYCODE_ENTER;
 
 
 public class SearchActivity extends Activity implements OnClickListener{
+    public final static String EXTRA_MESSAGE = "com.example.guillaume.feedley.MESSAGE";
 
     Button btnStartAnotherActivity;
     AutoCompleteTextView textView;
@@ -54,18 +56,18 @@ public class SearchActivity extends Activity implements OnClickListener{
         txt.setTypeface(font);
 
 
-        textView.setOnKeyListener(new OnKeyListener() {
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                // If the event is a key-down event on the "enter" button
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                        (keyCode == KEYCODE_ENTER)) {
-                    // Perform action on key press
-                    Toast.makeText(SearchActivity.this, textView.getText(), Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-                return false;
-            }
-        });
+//        textView.setOnKeyListener(new OnKeyListener() {
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                // If the event is a key-down event on the "enter" button
+//                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+//                        (keyCode == KEYCODE_ENTER)) {
+//                    // Perform action on key press
+//                    Toast.makeText(SearchActivity.this, textView.getText(), Toast.LENGTH_SHORT).show();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
 
 
@@ -98,9 +100,12 @@ public class SearchActivity extends Activity implements OnClickListener{
         //calling an activity using <intent-filter> action name
 
 
-        Intent intent = new Intent(SearchActivity.this, RecipesActivity.class);
+        Intent intent = new Intent(this, RecipesActivity.class);
+        EditText editText = (EditText) findViewById(R.id.autoCompleteTextView1);
+        String message = editText.getText().toString();
 
-        intent.putExtra("input", textView.getText());
+        intent.putExtra(EXTRA_MESSAGE, message);
+        //intent.putExtra("input", textView.getText());
         //intent.putExtra("input", "Tomato");
         startActivity(intent);
     }
