@@ -2,6 +2,83 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/actualPageShit">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:background="#ffa34a"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/searchLogo"
+            android:src="@drawable/search_bar_logo"
+            android:paddingLeft="7dp"
+            android:layout_gravity="center"
+            android:focusable="true"
+            android:clickable="true"
+            android:layout_marginBottom="-2dp"
+            android:layout_marginRight="2dp" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
 
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteTextView2"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:hint="Add more ingredients..."
+            android:padding="10dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="false"
+            android:password="false"
+            android:textColor="#ffa34a"
+            android:textColorHint="#ffa34a"
+            android:textIsSelectable="false"
+            android:dropDownWidth="230dp"
+            android:dropDownHeight="43dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="3dp"
+            />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:id="@+id/imageView"
+            android:src="@drawable/ic_action_search"
+            android:layout_toEndOf="@+id/autoCompleteTextView1"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:adjustViewBounds="false"
+            android:baselineAlignBottom="false"
+            android:paddingRight="0dp"
+            android:layout_gravity="top"
+            android:paddingTop="0dp"
+            android:layout_marginTop="4dp" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/settings"
+            android:src="@drawable/settings"
+            android:layout_toEndOf="@+id/autoCompleteTextView1"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:adjustViewBounds="false"
+            android:baselineAlignBottom="false"
+            android:paddingRight="10dp"
+            android:paddingTop="0dp"
+            android:layout_marginTop="4dp"
+            android:paddingBottom="2dp" />
+
+
+    </LinearLayout>
 </RelativeLayout>
