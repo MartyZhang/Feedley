@@ -22,7 +22,7 @@ public class SearchActivity extends Activity {
         setContentView(R.layout.activity_search);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, INGREDIENTS);
+                R.layout.dropdownstyle, INGREDIENTS);
 
         AutoCompleteTextView textView = (AutoCompleteTextView)
                 findViewById(R.id.autoCompleteTextView1);
