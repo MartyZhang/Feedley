@@ -25,6 +25,7 @@ public class SearchActivity extends Activity {
         textView.setAdapter(adapter);
 
         // set focus to it
+
         textView.requestFocus();
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
