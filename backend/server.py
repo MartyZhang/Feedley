@@ -10,9 +10,12 @@ from lxml import html
 import requests
 import urllib2
 import json
+import os
 import config
 
 app = Flask(__name__)
+
+PORT=int(os.environ.get('PORT', 5000))
 
 # Sample command: http://localhost:5000/getrecipes?items=chicken,tomato
 
@@ -77,4 +80,5 @@ def get_recipes():
     return jsonify({'recipes': recipes})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.debug=True
+    app.run(host='0.0.0.0', port=PORT)
