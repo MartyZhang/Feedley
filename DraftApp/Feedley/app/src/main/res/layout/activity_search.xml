@@ -32,6 +32,9 @@
         android:textColorHint="#ffffffff"
         android:textIsSelectable="false"
         android:background="@android:color/transparent"
+        android:popupBackground ="#7cb2d7cf"
+        android:dropDownWidth="235dp"
+        android:dropDownVerticalOffset= "1dp"
         android:layout_centerInParent="true" />
 
     <ImageView

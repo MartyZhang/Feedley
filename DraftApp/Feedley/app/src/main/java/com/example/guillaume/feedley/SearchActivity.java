@@ -20,6 +20,7 @@ public class SearchActivity extends Activity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, INGREDIENTS);
+
         AutoCompleteTextView textView = (AutoCompleteTextView)
                 findViewById(R.id.autoCompleteTextView1);
         textView.setAdapter(adapter);
@@ -35,7 +36,7 @@ public class SearchActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.search, menu);
+        //getMenuInflater().inflate(R.menu.search, menu);
         return true;
     }
 
@@ -44,13 +45,18 @@ public class SearchActivity extends Activity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        //int id = item.getItemId();
+        //if (id == R.id.action_settings) {
             return true;
-        }
-        return super.onOptionsItemSelected(item);
+        //}
+        //return super.onOptionsItemSelected(item);
     }
     private static final String[] INGREDIENTS = new String[] {
-            "Tomato", "Bread", "Milk", "Flour", "Chicken", "Meat", "Pizza", "Broccoli"
+            "Tomato", "Bread", "Milk", "Flour", "Chicken", "Meat", "Pizza", "Broccoli", "Steak",
+            "Beef", "Coriander", "Parsley", "Salt", "Pepper", "Flour", "Pasta", "Penne", "Tortellini",
+            "Spaghetti", "Macaroni", "Noodles", "Rice", "Pork", "Sausage", "Onion", "Spinach", "Cucumber",
+            "Lemon", "Garlic", "Ground meat", "Eggs", "Tomato Sauce", "Lettuce", "Peppers", "Banana", "Peanut Butter",
+            "Duck", "Lamb", "Salmon", "Tilapia", "Tuna", "Cod", "Trout", "Oysters", "Mushrooms", "Ketchup", "Mustard", "Mayo",
+            "Cheese", "Celery", "Tortilla", "Pita", "Olive oil", "Apple", "Oranges", "Grapefruit"
     };
 }
