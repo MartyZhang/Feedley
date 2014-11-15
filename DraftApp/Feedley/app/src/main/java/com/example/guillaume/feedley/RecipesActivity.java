@@ -47,6 +47,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
+import java.io.*;
+import java.net.*;
 
 
 public class RecipesActivity extends Activity {
@@ -71,9 +73,58 @@ public class RecipesActivity extends Activity {
         //tvView2 = (TextView) findViewById(R.id.textView2);
         //Intent intent = getIntent();
 
+       /* HttpClient httpclient = new DefaultHttpClient();
+        HttpGet httpget = new HttpGet("http://104.131.105.6:3000/session/" );
+
+
+        try {
+            HttpResponse response = httpclient.execute(httpget);
+            textView.setText("response " + response.toString()) ;
+
+        } catch (MalformedURLException e){
+            Log.e("app", "exception caught: ",e);
+            textView.setText("response: " + e.toString());
+        } catch (ClientProtocolException e) {
+            Log.e("app", "exception caught: ",e);
+            textView.setText("response: " + e.toString());
+        } catch (IOException e) {
+            Log.e("app", "exception caught: ",e);
+            textView.setText("response: " + e.toString());
+        }
+
+    }*/
+
+       /* String urlToRead = "http://foodley.herokuapp.com/getrecipes?items=tuna";
+        URL url;
+        HttpURLConnection conn;
+        BufferedReader rd;
+        String line;
+        String result = "";
+
+        try{
+
+            url = new URL(urlToRead);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            while ((line = rd.readLine()) != null) {
+                result += line;
+            }
+            rd.close();
+            textView.setText("response: " + result);
+        }
+
+        catch(Exception e){
+            e.printStackTrace();
+            textView.setText("response: " + e.toString());
+
+        }*/
+
+        //System.out.println(result);
+
     }
-
-
 }
+
+
 
 

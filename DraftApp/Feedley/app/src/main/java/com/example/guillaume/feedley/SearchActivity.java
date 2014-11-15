@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.view.KeyEvent;
 import android.view.View.OnKeyListener;
@@ -34,9 +35,22 @@ public class SearchActivity extends Activity implements OnClickListener{
 
         setContentView(R.layout.activity_search);
 
-        btnStartAnotherActivity = (Button) findViewById(R.id.btnStartAnotherActivity);
+        ImageButton searchThing= (ImageButton) findViewById(R.id.imageView);
 
-        btnStartAnotherActivity.setOnClickListener(this);
+        searchThing.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SearchActivity.this, RecipesActivity.class);
+                EditText editText = (EditText) findViewById(R.id.autoCompleteTextView1);
+                String message = editText.getText().toString();
+
+                intent.putExtra(EXTRA_MESSAGE, message);
+                //intent.putExtra("input", textView.getText());
+                //intent.putExtra("input", "Tomato");
+                startActivity(intent);
+            }
+        });
+
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 R.layout.dropdownstyle, INGREDIENTS);
@@ -100,14 +114,7 @@ public class SearchActivity extends Activity implements OnClickListener{
         //calling an activity using <intent-filter> action name
 
 
-        Intent intent = new Intent(this, RecipesActivity.class);
-        EditText editText = (EditText) findViewById(R.id.autoCompleteTextView1);
-        String message = editText.getText().toString();
 
-        intent.putExtra(EXTRA_MESSAGE, message);
-        //intent.putExtra("input", textView.getText());
-        //intent.putExtra("input", "Tomato");
-        startActivity(intent);
     }
 
 //    @Override
