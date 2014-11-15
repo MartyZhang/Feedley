@@ -1,10 +1,14 @@
 package com.example.guillaume.feedley;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
 
 public class SearchActivity extends Activity {
@@ -13,16 +17,17 @@ public class SearchActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        View background = findViewById(R.id.background);
-        background.post( new Runnable() {
 
-            @Override
-            public void run() {
-                View background = findViewById(R.id.background);
-                background.setBackgroundResource(0);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, INGREDIENTS);
+        AutoCompleteTextView textView = (AutoCompleteTextView)
+                findViewById(R.id.autoCompleteTextView1);
+        textView.setAdapter(adapter);
 
-            }
-        } );
+        // set focus to it
+        textView.requestFocus();
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
     }
 
 
@@ -44,4 +49,7 @@ public class SearchActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+    private static final String[] INGREDIENTS = new String[] {
+            "Tomato", "Bread", "Milk", "Flour", "Chicken", "Meat", "Pizza", "Broccoli"
+    };
 }
