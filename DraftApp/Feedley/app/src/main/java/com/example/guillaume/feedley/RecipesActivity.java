@@ -69,7 +69,7 @@ public class RecipesActivity extends Activity {
         textView.setText(message);
 
         // Set the text view as the activity layout
-        setContentView(textView);
+        setContentView(R.layout.actualpage);
         //tvView2 = (TextView) findViewById(R.id.textView2);
         //Intent intent = getIntent();
 
