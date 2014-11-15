@@ -7,8 +7,7 @@
 
 from flask import Flask, jsonify, request
 import urllib2, json
-
-apiKEY = '0c25d304894f3e6d646227454280b8fe'
+import config
 
 app = Flask(__name__)
 
@@ -20,7 +19,7 @@ def format_ingredients(ingredients):
 @app.route('/getrecipes', methods=['GET'])
 def get_recipes():
     response = request.args.get('items')
-    url = 'http://food2fork.com/api/search?key='+apiKEY+'&q='+str(format_ingredients(response))
+    url = 'http://food2fork.com/api/search?key='+config.apiKEY+'&q='+str(format_ingredients(response))
     data = json.load(urllib2.urlopen(url))
     print url
     return jsonify({'recipes': data})
