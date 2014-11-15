@@ -14,54 +14,67 @@ import config
 
 app = Flask(__name__)
 
-apiKEY = '0c25d304894f3e6d646227454280b8fe'
+# Sample command: http://localhost:5000/getrecipes?items=chicken,tomato
 
-def parse(data):
+'''
+    Remove unecessary properties from the JSON Data
+'''
+def remove_properties(data):
     properties = ['f2f_url', 'publisher', 'publisher_url', 'social_rank']
     for i in data['recipes']:
         for j in properties:
             del i[j]
     return data
 
-## Get recipe from allrecipes.com
+
+'''
+    Only get recipes from allrecipes using webscraper.py
+'''
 def get_recipe_allrecipe(request, title):
-#  request = 'http://allrecipes.com/Recipe/Slow-Cooker-Chicken-Tortilla-Soup/Detail.aspx'
-  req = request[title]['source_url'].replace('Detail.aspx', 'kitchenview.aspx') # Reformat to kitchenview.aspx
-  page = requests.get(req)
 
-  tree = html.fromstring(page.text)
-  ingredients = tree.xpath('//ul[@class="generaltext"]/li/text()')
-  ingredients_formatted = []
-  recipe = tree.xpath('//div[@class="direction"]/text()')
-  recipe_formatted = []
+    # reformat URL
+    req = request[title]['source_url'].replace('Detail.aspx', 'kitchenview.aspx')
+    page = requests.get(req)
 
-  for ingredient in ingredients:
-    ingredients_formatted.append(ingredient.strip())
+    # Scrape the web page
+    tree = html.fromstring(page.text)
+    ingredients = tree.xpath('//ul[@class="generaltext"]/li/text()')
+    ingredients_formatted = []
+    recipe = tree.xpath('//div[@class="direction"]/text()')
+    recipe_formatted = []
 
-  for instruction in recipe:
-    recipe_formatted.append(instruction.strip())
+    for ingredient in ingredients:
+        ingredients_formatted.append(ingredient.strip())
 
-  return {'ingredients': ingredients_formatted, 'recipe': recipe_formatted}
+    for instruction in recipe:
+        recipe_formatted.append(instruction.strip())
 
-# http://localhost:5000/getrecipes?items=chicken,tomato
+    return {'ingredients': ingredients_formatted, 'recipe': recipe_formatted}
+
+'''
+    Send a response via GET request
+'''
 @app.route('/getrecipes', methods=['GET'])
 def get_recipes():
+    # get items as url arguements
     response = request.args.get('items')
     items = str(response)
-    url = 'http://food2fork.com/api/search?key='+apiKEY+'&q='+items
+    # append API key and items to food2fork API URL
+    url = 'http://food2fork.com/api/search?key='+config.apiKEY+'&q='+items
 
+    # retrieve JSON Data
     json_data = json.load(urllib2.urlopen(url))
-    formatted_data = parse(json_data)
-    d = formatted_data
-    recipes = {}
+    # format json data and remove unecessary properties
+    formatted_data = remove_properties(json_data)
 
+    # create new list with recipe instructions
+    recipes = {}
     for recipe in formatted_data['recipes']:
-      if "allrecipes" in recipe['source_url']:
-        image_and_source = {recipe['title']: {'image_url': recipe['image_url'], 'source_url': recipe['source_url']}}
-        recipes[recipe['title']] = {'image_url': image_and_source[recipe['title']]['image_url'], 'source_url': image_and_source[recipe['title']]['source_url'], 'ingredients': get_recipe_allrecipe(image_and_source, image_and_source.keys()[0])['ingredients'], 'recipe': get_recipe_allrecipe(image_and_source, image_and_source.keys()[0])['recipe'] }
+        if "allrecipes" in recipe['source_url']:
+            image_and_source = {recipe['title']: {'image_url': recipe['image_url'], 'source_url': recipe['source_url']}}
+            recipes[recipe['title']] = {'image_url': image_and_source[recipe['title']]['image_url'], 'source_url': image_and_source[recipe['title']]['source_url'], 'ingredients': get_recipe_allrecipe(image_and_source, image_and_source.keys()[0])['ingredients'], 'recipe': get_recipe_allrecipe(image_and_source, image_and_source.keys()[0])['recipe'] }
 
     return jsonify({'recipes': recipes})
-
 
 if __name__ == '__main__':
     app.run(debug=True)
