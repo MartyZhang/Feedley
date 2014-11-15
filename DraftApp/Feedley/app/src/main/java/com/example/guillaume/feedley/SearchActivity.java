@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
 public class SearchActivity extends Activity {
@@ -12,6 +13,15 @@ public class SearchActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        View background = findViewById(R.id.background);
+        background.post( new Runnable() {
+
+            @Override
+            public void run() {
+                View background = findViewById(R.id.background);
+                background.setBackgroundResource(0);
+            }
+        } );
     }
 
 
