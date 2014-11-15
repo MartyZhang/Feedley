@@ -20,6 +20,7 @@ public class SearchActivity extends Activity {
             public void run() {
                 View background = findViewById(R.id.background);
                 background.setBackgroundResource(0);
+
             }
         } );
     }
