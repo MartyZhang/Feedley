@@ -2,6 +2,7 @@ package com.example.guillaume.feedley;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 
 
 public class SearchActivity extends Activity {
@@ -16,6 +18,7 @@ public class SearchActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_search);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -26,10 +29,12 @@ public class SearchActivity extends Activity {
         textView.setAdapter(adapter);
 
         // set focus to it
-
         textView.requestFocus();
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
+        TextView txt = (TextView) findViewById(R.id.custom_font);
+        Typeface font = Typeface.createFromAsset(getAssets(), "LeckerliOne_Regular.otf");
+        txt.setTypeface(font);
     }
 
 
