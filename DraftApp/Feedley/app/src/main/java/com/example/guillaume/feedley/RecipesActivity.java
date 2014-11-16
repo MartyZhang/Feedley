@@ -2,6 +2,7 @@ package com.example.guillaume.feedley;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -24,6 +25,9 @@ import java.util.Iterator;
 
 import android.view.View;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
 
 public class RecipesActivity extends Activity {
 
@@ -32,14 +36,12 @@ public class RecipesActivity extends Activity {
     TextView name;
     TextView api;
     Button Btngetdata;
-    ArrayList<HashMap<String, String>> thelist = new ArrayList<HashMap<String, String>>();
-    //URL to get JSON Array
+    ArrayList<JSONObject> theList;
 
-
-
+    ImageLoader imgLoader;
     private static String url = "http://foodley.herokuapp.com/getrecipes?items=";
     String value=null;
-    JSONObject recipes = null;
+    JSONArray recipes = null;
     TextView tvView;
     TextView tvView2;
     @Override
@@ -65,62 +67,20 @@ public class RecipesActivity extends Activity {
         TextView txt = (TextView) findViewById(R.id.custom_font);
         Typeface font = Typeface.createFromAsset(getAssets(), "LeckerliOne_Regular.otf");
         txt.setTypeface(font);
-        new JSONParse().execute();
-        //tvView2 = (TextView) findViewById(R.id.textView2);
-        //Intent intent = getIntent();
+        new JSONParse(this).execute();
 
-       /* HttpClient httpclient = new DefaultHttpClient();
-        HttpGet httpget = new HttpGet("http://104.131.105.6:3000/session/" );
-
-
-        try {
-            HttpResponse response = httpclient.execute(httpget);
-            textView.setText("response " + response.toString()) ;
-
-        } catch (MalformedURLException e){
-            Log.e("app", "exception caught: ",e);
-            textView.setText("response: " + e.toString());
-        } catch (ClientProtocolException e) {
-            Log.e("app", "exception caught: ",e);
-            textView.setText("response: " + e.toString());
-        } catch (IOException e) {
-            Log.e("app", "exception caught: ",e);
-            textView.setText("response: " + e.toString());
-        }
-
-    }*/
-
-       /* String urlToRead = "http://foodley.herokuapp.com/getrecipes?items=tuna";
-        URL url;
-        HttpURLConnection conn;
-        BufferedReader rd;
-        String line;
-        String result = "";
-
-        try{
-
-            url = new URL(urlToRead);
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            while ((line = rd.readLine()) != null) {
-                result += line;
-            }
-            rd.close();
-            textView.setText("response: " + result);
-        }
-
-        catch(Exception e){
-            e.printStackTrace();
-            textView.setText("response: " + e.toString());
-
-        }*/
-
-        //System.out.println(result);
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
+                .build();
+        ImageLoader.getInstance().init(config);
 
     }
     private class JSONParse extends AsyncTask<String, String, JSONObject> {
         private ProgressDialog pDialog;
+        private Context mContext;
+
+        private JSONParse(Context mContext) {
+            this.mContext = mContext;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -146,35 +106,24 @@ public class RecipesActivity extends Activity {
             pDialog.dismiss();
             try {
                 // Getting JSON Array from URL
-                recipes = json.getJSONObject("recipes");
-                Iterator<String> iter = recipes.keys();
-                while (iter.hasNext()) {
-                    String name = iter.next();
-                    //JSONObject c = recipes.getJSONObject(i);
-                    // Storing  JSON item in a Variable
-                    //String name = c.;
-                    //String image_url = c.getString("image_url");
-                    // Adding value HashMap key => value
-                    HashMap<String, String> map = new HashMap<String, String>();
-                    map.put("name", name);
-                    //map.put("image_url", image_url);
+                recipes = json.getJSONArray("recipes");
 
-                    //new ImageDownloader(icon).execute(image_url);
-                    thelist.add(map);
-                    list = (ListView) findViewById(R.id.listView);
-                    ListAdapter adapter = new SimpleAdapter(RecipesActivity.this, thelist,
-                            R.layout.row_listitem,
-                            new String[]{"name"/*, "image_url"*/}, new int[]{
-                            R.id.textName});
-                    list.setAdapter(adapter);
-                    list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view,
-                                                int position, long id) {
-                            Toast.makeText(RecipesActivity.this, "You Clicked at " + thelist.get(+position).get("name"), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                theList = new ArrayList<JSONObject>();
+                for (int i=0; i<recipes.length(); i++) {
+                    JSONObject recipe = recipes.getJSONObject(i);
+                    theList.add(recipe);
                 }
+
+                list = (ListView) findViewById(R.id.listView);
+                CustomListAdapter adapter = new CustomListAdapter(mContext, R.layout.row_listitem, theList);
+                list.setAdapter(adapter);
+                /*list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+                        Toast.makeText(RecipesActivity.this, "You Clicked at " + theList.get(position).get("name"), Toast.LENGTH_SHORT).show();
+                    }
+                });*/
             } catch (JSONException e) {
                 e.printStackTrace();
             }

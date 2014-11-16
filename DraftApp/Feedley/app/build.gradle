@@ -20,5 +20,9 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile files('C:/Users/Guillaume/Documents/GitHub/Feedley/DraftApp/Feedley/libs/universal-image-loader-1.9.3.jar')
+    compile files('C:/Users/Guillaume/Documents/GitHub/Feedley/DraftApp/Feedley/libs/universal-image-loader-1.9.3-javadoc.jar')
+    compile files('C:/Users/Guillaume/Documents/GitHub/Feedley/DraftApp/Feedley/libs/universal-image-loader-1.9.3-sources.jar')
+    compile files('C:/Users/Guillaume/Documents/GitHub/Feedley/DraftApp/Feedley/libs/universal-image-loader-1.9.3-with-sources.jar')
 }

@@ -2,7 +2,6 @@ package com.example.guillaume.feedley;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -15,13 +14,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.view.KeyEvent;
-import android.view.View.OnKeyListener;
-import android.widget.Toast;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
-
-import static android.view.KeyEvent.KEYCODE_ENTER;
 
 
 public class SearchActivity extends Activity implements OnClickListener{
@@ -35,7 +29,7 @@ public class SearchActivity extends Activity implements OnClickListener{
 
         setContentView(R.layout.activity_search);
 
-        ImageButton searchThing= (ImageButton) findViewById(R.id.imageView);
+        ImageButton searchThing= (ImageButton) findViewById(R.id.imagePreview);
 
         searchThing.setOnClickListener(new OnClickListener() {
             @Override
