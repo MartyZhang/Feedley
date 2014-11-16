@@ -38,6 +38,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -51,17 +52,43 @@ import java.io.*;
 import java.net.*;
 
 
-public class RecipesActivity extends Activity {
 
-    TextView tvView;
-    TextView tvView2;
+
+public class RecipesActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
 
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(SearchActivity.EXTRA_MESSAGE);
+        String json = null;
+        JSONObject jsonObject = new JSONObject();
+        String message = null;
+        try {
+
+            InputStream is = getAssets().open("recipe.json");
+
+            int size = is.available();
+
+            byte[] buffer = new byte[size];
+
+            is.read(buffer);
+
+            is.close();
+
+            json = new String(buffer, "UTF-8");
+            jsonObject= new JSONObject(json);
+            message = jsonObject.getString("recipes");
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+
+
+
+
+        //Intent intent = getIntent();
+        //String message = intent.getStringExtra(SearchActivity.EXTRA_MESSAGE);
 
         // Create the text view
         TextView textView = new TextView(this);

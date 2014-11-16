@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -97,6 +98,7 @@ public class MyActivity extends Activity implements View.OnClickListener {
                 HttpEntity responseEntity = response.getEntity();
                 if(responseEntity!=null) {
                     result = EntityUtils.toString(responseEntity);
+                    Log.d("App", result);
                 }
                 return result;
             } catch (ClientProtocolException e) {
