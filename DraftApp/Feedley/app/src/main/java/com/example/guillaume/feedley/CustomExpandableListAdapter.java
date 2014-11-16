@@ -75,6 +75,9 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
             Typeface font = Typeface.createFromAsset(_context.getAssets(), "Rex_Bold.otf");
             textSteps.setTypeface(font);
             textSteps.setText(sb.toString());
+            Fx.slide_down(_context, textSteps);
+
+
         } catch(JSONException e) {
             Log.e("ListAdapter", "Error parsing data " + e.toString());
         }

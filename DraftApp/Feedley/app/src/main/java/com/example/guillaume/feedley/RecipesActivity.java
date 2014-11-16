@@ -109,6 +109,11 @@ public class RecipesActivity extends Activity {
         searchThing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                InputMethodManager inputManager = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
                 Intent intent = new Intent(RecipesActivity.this, RecipesActivity.class);
                 EditText editText = (EditText) findViewById(R.id.autoCompleteTextView2);
                 String message = editText.getText().toString();
@@ -167,6 +172,32 @@ public class RecipesActivity extends Activity {
                 //CustomListAdapter adapter = new CustomListAdapter(mContext, R.layout.row_listitem, theList,"Rex_Bold.otf" );
                 CustomExpandableListAdapter adapter = new CustomExpandableListAdapter(mContext, recipes);
                 list.setAdapter(adapter);
+
+                list.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+
+                    @Override
+                    public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                        // We call collapseGroupWithAnimation(int) and
+                        // expandGroupWithAnimation(int) to animate group
+                        // expansion/collapse.
+                        InputMethodManager inputManager = (InputMethodManager)
+                                getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                                InputMethodManager.HIDE_NOT_ALWAYS);
+                        if (list.isGroupExpanded(groupPosition)) {
+                            list.collapseGroup(groupPosition);
+
+                        } else {
+                            list.expandGroup(groupPosition);
+
+                            }
+
+
+                        return true;
+                    }
+
+                });
                 /*list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view,
