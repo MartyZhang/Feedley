@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -34,11 +35,11 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 public class RecipesActivity extends Activity {
 
-    ListView list;
+    ExpandableListView list;
     TextView ver;
     TextView name;
     TextView api;
-    Button Btngetdata;
+    Button BtngetdataButton;
     ArrayList<JSONObject> theList;
 
     ImageLoader imgLoader;
@@ -137,14 +138,15 @@ public class RecipesActivity extends Activity {
                 // Getting JSON Array from URL
                 recipes = json.getJSONArray("recipes");
 
-                theList = new ArrayList<JSONObject>();
+                /*theList = new ArrayList<JSONObject>();
                 for (int i=0; i<recipes.length(); i++) {
                     JSONObject recipe = recipes.getJSONObject(i);
                     theList.add(recipe);
-                }
+                }*/
 
-                list = (ListView) findViewById(R.id.listView);
-                CustomListAdapter adapter = new CustomListAdapter(mContext, R.layout.row_listitem, theList,"Rex_Bold.otf" );
+                list = (ExpandableListView) findViewById(R.id.listView);
+                //CustomListAdapter adapter = new CustomListAdapter(mContext, R.layout.row_listitem, theList,"Rex_Bold.otf" );
+                CustomExpandableListAdapter adapter = new CustomExpandableListAdapter(mContext, recipes);
                 list.setAdapter(adapter);
                 /*list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
