@@ -36,6 +36,12 @@ public class SearchActivity extends Activity implements OnClickListener{
         searchThing.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                InputMethodManager inputManager = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+                Intent intent = new Intent(SearchActivity.this, RecipesActivity.class);
                 EditText editText = (EditText) findViewById(R.id.autoCompleteTextView1);
                 String message = editText.getText().toString();
 
@@ -47,8 +53,6 @@ public class SearchActivity extends Activity implements OnClickListener{
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                 }else{
-                    Intent intent = new Intent(SearchActivity.this, RecipesActivity.class);
-
                     intent.putExtra("inputIngredients", message.replace(" ","%20"));
                     //intent.putExtra("input", textView.getText());
                     //intent.putExtra("input", "Tomato");
