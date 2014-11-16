@@ -39,7 +39,7 @@ public class SearchActivity extends Activity implements OnClickListener{
                 EditText editText = (EditText) findViewById(R.id.autoCompleteTextView1);
                 String message = editText.getText().toString();
 
-                intent.putExtra("inputIngredients", message);
+                intent.putExtra("inputIngredients", message.replace(" ","%20"));
                 //intent.putExtra("input", textView.getText());
                 //intent.putExtra("input", "Tomato");
                 startActivity(intent);
@@ -81,6 +81,7 @@ public class SearchActivity extends Activity implements OnClickListener{
 
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
