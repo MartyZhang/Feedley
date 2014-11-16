@@ -12,8 +12,10 @@ import urllib2
 import json
 import os
 import config
+import re
 
 app = Flask(__name__)
+
 
 PORT=int(os.environ.get('PORT', 5000))
 
@@ -35,22 +37,18 @@ def remove_properties(data):
 '''
 def get_recipe_allrecipe(request, title):
 
-    # reformat URL
-    req = request[title]['source_url'].replace('Detail.aspx', 'kitchenview.aspx')
-    page = requests.get(req)
-
-    # Scrape the web page
+    page = requests.get(request[title]['source_url'])
     tree = html.fromstring(page.text)
-    ingredients = tree.xpath('//ul[@class="generaltext"]/li/text()')
     ingredients_formatted = []
-    recipe = tree.xpath('//div[@class="direction"]/text()')
     recipe_formatted = []
-
-    for ingredient in ingredients:
-        ingredients_formatted.append(ingredient.strip())
+    numbers = tree.xpath('//span[@class="ingredient-amount"]/text()')
+    ingredients = tree.xpath('//span[@class="ingredient-name"]/text()')
+    recipe = tree.xpath('//span[@class="plaincharacterwrap break"]/text()')
+    for ingredient, number in zip(ingredients, numbers):
+        ingredients_formatted.append(number + ' ' + ingredient)
 
     for instruction in recipe:
-        recipe_formatted.append(instruction.strip())
+        recipe_formatted.append(instruction)
 
     return {'ingredients': ingredients_formatted, 'recipe': recipe_formatted}
 
@@ -71,11 +69,25 @@ def get_recipes():
     formatted_data = remove_properties(json_data)
 
     # create new list with recipe instructions
-    recipes = {}
+    recipes = []
     for recipe in formatted_data['recipes']:
         if "allrecipes" in recipe['source_url']:
-            image_and_source = {recipe['title']: {'image_url': recipe['image_url'], 'source_url': recipe['source_url']}}
-            recipes[recipe['title']] = {'image_url': image_and_source[recipe['title']]['image_url'], 'source_url': image_and_source[recipe['title']]['source_url'], 'ingredients': get_recipe_allrecipe(image_and_source, image_and_source.keys()[0])['ingredients'], 'recipe': get_recipe_allrecipe(image_and_source, image_and_source.keys()[0])['recipe'] }
+            image_and_source = {
+                recipe['title']:
+                    {'image_url': recipe['image_url'],
+                     'source_url': recipe['source_url']
+                    }
+            }
+            ingred_instr = get_recipe_allrecipe(image_and_source, recipe['title'])
+            element = {
+                'title': recipe['title'],
+                'image_url': recipe['image_url'],
+                'source_url': recipe['source_url'],
+                'ingredients': ingred_instr['ingredients'],
+                'recipe': ingred_instr['recipe']
+            }
+            recipes.append(element)
+           # recipes.append(recipes_elem)
 
     return jsonify({'recipes': recipes})
 
