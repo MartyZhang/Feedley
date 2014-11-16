@@ -51,19 +51,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
     boolean isLastChild, View convertView, ViewGroup parent) {
 
-        /*final String childText = (String) getChild(groupPosition, childPosition);
 
-        if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_item, null);
-        }
-
-        TextView txtListChild = (TextView) convertView
-                .findViewById(R.id.lblListItem);
-
-        txtListChild.setText(childText);
-        return convertView;*/
         LayoutInflater inflater = (LayoutInflater) _context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.list_item, parent, false);
@@ -74,16 +62,18 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
             JSONArray steps = recipe.getJSONArray("recipe");
 
             StringBuilder sb = new StringBuilder();
-            sb.append("Ingredients: ").append('\n');
+            sb.append("Ingredients: ").append('\n').append('\n');
             for (int i=0; i<ingredients.length(); i++)
-                sb.append("+ ").append(ingredients.getString(i)).append('\n');
-            sb.append("\nSteps: ").append('\n');
+            sb.append("").append(ingredients.getString(i)).append('\n').append('\n');
+            sb.append("\nSteps: ").append('\n').append('\n');
             for (int i=0; i<steps.length(); i++)
-                sb.append(i+1).append(". ").append(steps.getString(i)).append('\n');
+                sb.append(i+1).append(". ").append(steps.getString(i)).append('\n').append('\n');
             String name = recipe.getString("title");
             //String steps = recipe.getString("description");
             String image_url = recipe.getString("image_url");
             TextView textSteps = (TextView) v.findViewById(R.id.textSteps);
+            Typeface font = Typeface.createFromAsset(_context.getAssets(), "Rex_Bold.otf");
+            textSteps.setTypeface(font);
             textSteps.setText(sb.toString());
         } catch(JSONException e) {
             Log.e("ListAdapter", "Error parsing data " + e.toString());
@@ -143,6 +133,8 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
             //String steps = recipe.getString("description");
             String image_url = recipe.getString("image_url");
             TextView textName = (TextView) v.findViewById(R.id.textName);
+            Typeface font = Typeface.createFromAsset(_context.getAssets(), "Rex_Bold.otf");
+            textName.setTypeface(font);
             ImageView preview = (ImageView) v.findViewById(R.id.imagePreview);
             if (recipe != null) {
                 textName.setText(name);
