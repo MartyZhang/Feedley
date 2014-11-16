@@ -40,7 +40,7 @@
             android:dropDownHeight="43dp"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginRight="0dp"
             android:background="#ffffffff"/>
         <View
@@ -51,36 +51,21 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:id="@+id/imagePreview"
+            android:id="@+id/imagePreview2"
             android:src="@drawable/ic_action_search"
             android:layout_toEndOf="@+id/autoCompleteTextView1"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:clickable="true"
             android:adjustViewBounds="false"
             android:baselineAlignBottom="false"
             android:paddingRight="0dp"
             android:layout_gravity="top"
             android:paddingTop="0dp"
             android:layout_marginTop="4dp"
-            android:layout_marginRight="10dp" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:id="@+id/settings"
-            android:src="@drawable/settings"
-            android:layout_toEndOf="@+id/autoCompleteTextView1"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:adjustViewBounds="false"
-            android:baselineAlignBottom="false"
-            android:paddingRight="10dp"
-            android:paddingTop="0dp"
-            android:layout_marginTop="-5dp"
-            android:paddingBottom="2dp"
-            android:layout_marginBottom="0dp"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="25dp" />
     </LinearLayout>
-    <ListView
+    <!--<ListView
         android:background="#ffffffff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -93,7 +78,18 @@
         android:dividerHeight="1dp"
         android:drawSelectorOnTop="false"
         android:clickable="true"
-        android:smoothScrollbar="true" />
+        android:smoothScrollbar="true" />-->
+    <ExpandableListView
+        android:id="@+id/listView"
+        android:background="#ffffffff"
+        android:layout_below="@+id/linearLayout"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:clickable="true"
+        android:smoothScrollbar="true"
+        android:layout_margin="0dp"
+        android:divider="#ff454545"
+        android:dividerHeight="1dp"/>
 
 
 </RelativeLayout>
