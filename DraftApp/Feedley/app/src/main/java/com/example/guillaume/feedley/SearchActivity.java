@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -29,7 +30,7 @@ public class SearchActivity extends Activity implements OnClickListener{
 
         setContentView(R.layout.activity_search);
 
-        ImageButton searchThing= (ImageButton) findViewById(R.id.imagePreview);
+        ImageView searchThing= (ImageView)findViewById(R.id.imagePreview);
 
         searchThing.setOnClickListener(new OnClickListener() {
             @Override

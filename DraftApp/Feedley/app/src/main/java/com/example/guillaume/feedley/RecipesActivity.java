@@ -12,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -101,8 +103,25 @@ public class RecipesActivity extends Activity {
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
                 .build();
         ImageLoader.getInstance().init(config);
+        ImageView searchThing = (ImageView) findViewById(R.id.imagePreview2);
+
+        searchThing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RecipesActivity.this, RecipesActivity.class);
+                EditText editText = (EditText) findViewById(R.id.autoCompleteTextView2);
+                String message = editText.getText().toString();
+
+                intent.putExtra("inputIngredients", value+","+message);
+                //intent.putExtra("input", textView.getText());
+                //intent.putExtra("input", "Tomato");
+                startActivity(intent);
+            }
+        });
 
     }
+
+
     private class JSONParse extends AsyncTask<String, String, JSONObject> {
         private ProgressDialog pDialog;
         private Context mContext;
