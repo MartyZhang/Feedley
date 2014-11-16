@@ -44,7 +44,7 @@ public class SearchActivity extends Activity implements OnClickListener{
                 EditText editText = (EditText) findViewById(R.id.autoCompleteTextView1);
                 String message = editText.getText().toString();
 
-                intent.putExtra(EXTRA_MESSAGE, message);
+                intent.putExtra("inputIngredients", message);
                 //intent.putExtra("input", textView.getText());
                 //intent.putExtra("input", "Tomato");
                 startActivity(intent);

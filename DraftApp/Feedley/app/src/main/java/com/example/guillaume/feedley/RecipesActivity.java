@@ -34,7 +34,11 @@ public class RecipesActivity extends Activity {
     Button Btngetdata;
     ArrayList<HashMap<String, String>> thelist = new ArrayList<HashMap<String, String>>();
     //URL to get JSON Array
-    private static String url = "http://foodley.herokuapp.com/getrecipes?items=tomato";
+
+
+
+    private static String url = "http://foodley.herokuapp.com/getrecipes?items=";
+    String value=null;
     JSONObject recipes = null;
     TextView tvView;
     TextView tvView2;
@@ -43,13 +47,18 @@ public class RecipesActivity extends Activity {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            value = extras.getString("inputIngredients");
+        }
+
         Intent intent = getIntent();
-        String message = intent.getStringExtra(SearchActivity.EXTRA_MESSAGE);
+        //String message = intent.getStringExtra(SearchActivity.EXTRA_MESSAGE);
 
         // Create the text view
         TextView textView = new TextView(this);
         textView.setTextSize(40);
-        textView.setText(message);
+        textView.setText(value);
 
         // Set the text view as the activity layout
         setContentView(R.layout.activity_recipes);
@@ -128,7 +137,7 @@ public class RecipesActivity extends Activity {
         protected JSONObject doInBackground(String... args) {
             JSONParser jParser = new JSONParser();
             // Getting JSON from URL
-            JSONObject json = jParser.getJSONFromUrl(url);
+            JSONObject json = jParser.getJSONFromUrl(url+value);
             return json;
         }
 
