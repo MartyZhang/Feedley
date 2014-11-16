@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.app.Activity;
 import android.content.Context;
@@ -32,12 +33,14 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -55,101 +58,113 @@ import java.net.*;
 
 
 public class RecipesActivity extends Activity {
+
+    private EditText value;
+    private Button btn;
+    private ProgressBar pb;
+    private TextView textView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
 
-        String json = null;
-        JSONObject jsonObject = new JSONObject();
-        String message = null;
-        try {
+        // Second search bar
+      /*  ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                R.layout.dropdownstyle, INGREDIENTS);
 
-            InputStream is = getAssets().open("recipe.json");
-
-            int size = is.available();
-
-            byte[] buffer = new byte[size];
-
-            is.read(buffer);
-
-            is.close();
-
-            json = new String(buffer, "UTF-8");
-            jsonObject= new JSONObject(json);
-            message = jsonObject.getString("recipes");
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        AutoCompleteTextView textView = (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView2);
+        textView.setAdapter(adapter);
+        textView.requestFocus();
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
+        TextView txt = (TextView) findViewById(R.id.custom_font);
+        Typeface font = Typeface.createFromAsset(getAssets(), "LeckerliOne_Regular.otf");
+        txt.setTypeface(font);*/
 
 
 
-
-
-        //Intent intent = getIntent();
-        //String message = intent.getStringExtra(SearchActivity.EXTRA_MESSAGE);
-
-        // Create the text view
-        TextView textView = new TextView(this);
-        textView.setTextSize(40);
-        textView.setText(message);
-
-        // Set the text view as the activity layout
         setContentView(R.layout.actualpage);
-        //tvView2 = (TextView) findViewById(R.id.textView2);
-        //Intent intent = getIntent();
 
-       /* HttpClient httpclient = new DefaultHttpClient();
-        HttpGet httpget = new HttpGet("http://104.131.105.6:3000/session/" );
+        // Input from page uno
+   /*     Intent intent = getIntent();
+        String message = intent.getStringExtra(SearchActivity.EXTRA_MESSAGE);
+        TextView textView2 = (TextView) findViewById(R.id.textView);
+        textView2.setText(message); // delete this laterz*/
 
-
-        try {
-            HttpResponse response = httpclient.execute(httpget);
-            textView.setText("response " + response.toString()) ;
-
-        } catch (MalformedURLException e){
-            Log.e("app", "exception caught: ",e);
-            textView.setText("response: " + e.toString());
-        } catch (ClientProtocolException e) {
-            Log.e("app", "exception caught: ",e);
-            textView.setText("response: " + e.toString());
-        } catch (IOException e) {
-            Log.e("app", "exception caught: ",e);
-            textView.setText("response: " + e.toString());
-        }
-
-    }*/
-
-       /* String urlToRead = "http://foodley.herokuapp.com/getrecipes?items=tuna";
-        URL url;
-        HttpURLConnection conn;
-        BufferedReader rd;
-        String line;
-        String result = "";
-
-        try{
-
-            url = new URL(urlToRead);
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            while ((line = rd.readLine()) != null) {
-                result += line;
-            }
-            rd.close();
-            textView.setText("response: " + result);
-        }
-
-        catch(Exception e){
-            e.printStackTrace();
-            textView.setText("response: " + e.toString());
-
-        }*/
-
-        //System.out.println(result);
+       // Get URL:
 
     }
+
+    private class MyAsyncTask extends AsyncTask<String, Integer, String> {
+        private String result = "";
+        @Override
+        protected String doInBackground(String... params) {
+
+            Intent intent = getIntent();
+            String message = intent.getStringExtra(SearchActivity.EXTRA_MESSAGE);
+
+            // TODO Auto-generated method stub
+            result =  getData(message);
+
+            publishProgress(100);
+
+            // Test result??
+            //TextView textView2 = (TextView) findViewById(R.id.textView);
+            //textView2.setText(result); // delete this laterz
+            Log.d("App", result);
+            return result;
+        }
+
+        protected void onPostExecute(Double result) {
+            pb.setVisibility(View.GONE);
+            Toast.makeText(getApplicationContext(), "command sent", Toast.LENGTH_LONG).show();
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+            pb.setProgress(progress[0]);
+            if(progress[0] == 100){
+                textView.setText(result);
+            }
+        }
+
+        public String getData(String valueIWantToSend) {
+            // Create a new HttpClient and Get Header
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpGet httpget = null;
+
+            try {
+                httpget = new HttpGet("http://foodley.herokuapp.com/getrecipes?items="+valueIWantToSend);
+
+                // Execute HTTP Post Request
+                HttpResponse response = httpclient.execute(httpget);
+                HttpEntity responseEntity = response.getEntity();
+                if(responseEntity!=null) {
+                    result = EntityUtils.toString(responseEntity);
+                    Log.d("JSON", result);
+
+                }
+                else{
+                    Log.d("JSON", "no json :(");
+                }
+                return result;
+            } catch (ClientProtocolException e) {
+
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+            }
+            return "true";
+        }
+    }
+
+    private static final String[] INGREDIENTS = new String[] {
+            "Tomato", "Bread", "Milk", "Flour", "Chicken", "Meat", "Pizza", "Broccoli", "Steak",
+            "Beef", "Coriander", "Parsley", "Salt", "Pepper", "Flour", "Pasta", "Penne", "Tortellini",
+            "Spaghetti", "Macaroni", "Noodles", "Rice", "Pork", "Sausage", "Onion", "Spinach", "Cucumber",
+            "Lemon", "Garlic", "Ground meat", "Eggs", "Tomato Sauce", "Lettuce", "Peppers", "Banana", "Peanut Butter",
+            "Duck", "Lamb", "Salmon", "Tilapia", "Tuna", "Cod", "Trout", "Oysters", "Mushrooms", "Ketchup", "Mustard", "Mayo",
+            "Cheese", "Celery", "Tortilla", "Pita", "Olive oil", "Apple", "Oranges", "Grapefruit"
+    };
 }
 
 
