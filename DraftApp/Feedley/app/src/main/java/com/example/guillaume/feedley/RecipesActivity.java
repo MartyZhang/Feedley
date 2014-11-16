@@ -3,6 +3,7 @@ package com.example.guillaume.feedley;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.AdapterView;
@@ -52,6 +53,9 @@ public class RecipesActivity extends Activity {
 
         // Set the text view as the activity layout
         setContentView(R.layout.activity_recipes);
+        TextView txt = (TextView) findViewById(R.id.custom_font);
+        Typeface font = Typeface.createFromAsset(getAssets(), "LeckerliOne_Regular.otf");
+        txt.setTypeface(font);
         new JSONParse().execute();
         //tvView2 = (TextView) findViewById(R.id.textView2);
         //Intent intent = getIntent();
