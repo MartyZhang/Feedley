@@ -25,7 +25,6 @@
             android:layout_gravity="center" />
 
         <AutoCompleteTextView
-
             android:id="@+id/autoCompleteTextView2"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
@@ -44,7 +43,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="0dp"
-            android:background="#ffffffff"/>
+            android:background="@drawable/rounded_corner"/>
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
