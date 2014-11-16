@@ -2,6 +2,7 @@ package com.example.guillaume.feedley;
 
 import android.content.ClipData;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,15 +23,17 @@ import java.util.List;
  */
 public class CustomListAdapter extends ArrayAdapter<JSONObject> {
     private final Context mContext;
+    Typeface tf;
 
     public CustomListAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
         this.mContext = context;
     }
 
-    public CustomListAdapter(Context context, int resource, List<JSONObject> objects) {
+    public CustomListAdapter(Context context, int resource, List<JSONObject> objects, String FONT) {
         super(context, resource, objects);
         this.mContext = context;
+        tf = Typeface.createFromAsset(context.getAssets(), FONT);
     }
 
     @Override

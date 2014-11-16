@@ -80,6 +80,9 @@ public class RecipesActivity extends Activity {
         Typeface font = Typeface.createFromAsset(getAssets(), "LeckerliOne_Regular.otf");
         txt.setTypeface(font);
 
+
+
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 R.layout.dropdownstyle, INGREDIENTS);
 
@@ -141,7 +144,7 @@ public class RecipesActivity extends Activity {
                 }
 
                 list = (ListView) findViewById(R.id.listView);
-                CustomListAdapter adapter = new CustomListAdapter(mContext, R.layout.row_listitem, theList);
+                CustomListAdapter adapter = new CustomListAdapter(mContext, R.layout.row_listitem, theList,"Rex_Bold.otf" );
                 list.setAdapter(adapter);
                 /*list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
