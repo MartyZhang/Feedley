@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class SearchActivity extends Activity implements OnClickListener{
@@ -35,19 +36,24 @@ public class SearchActivity extends Activity implements OnClickListener{
         searchThing.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                InputMethodManager inputManager = (InputMethodManager)
-                        getSystemService(Context.INPUT_METHOD_SERVICE);
-
-                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-                Intent intent = new Intent(SearchActivity.this, RecipesActivity.class);
                 EditText editText = (EditText) findViewById(R.id.autoCompleteTextView1);
                 String message = editText.getText().toString();
 
-                intent.putExtra("inputIngredients", message.replace(" ","%20"));
-                //intent.putExtra("input", textView.getText());
-                //intent.putExtra("input", "Tomato");
-                startActivity(intent);
+                if(message.isEmpty()){
+                    Context context = getApplicationContext();
+                    CharSequence text = "Please enter ingredients";
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }else{
+                    Intent intent = new Intent(SearchActivity.this, RecipesActivity.class);
+
+                    intent.putExtra("inputIngredients", message.replace(" ","%20"));
+                    //intent.putExtra("input", textView.getText());
+                    //intent.putExtra("input", "Tomato");
+                    startActivity(intent);
+                }
             }
         });
 
