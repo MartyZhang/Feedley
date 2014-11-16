@@ -1,58 +1,40 @@
 package com.example.guillaume.feedley;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-import android.app.Activity;
-import android.content.Context;
-import android.graphics.Typeface;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.view.KeyEvent;
-import android.view.View.OnKeyListener;
 import android.widget.Toast;
-import android.widget.Button;
-import android.content.Intent;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import javax.net.ssl.HttpsURLConnection;
-import java.io.*;
-import java.net.*;
+import android.view.View;
 
 
 public class RecipesActivity extends Activity {
 
+    ListView list;
+    TextView ver;
+    TextView name;
+    TextView api;
+    Button Btngetdata;
+    ArrayList<HashMap<String, String>> thelist = new ArrayList<HashMap<String, String>>();
+    //URL to get JSON Array
+    private static String url = "http://foodley.herokuapp.com/getrecipes?items=tomato";
+    JSONObject recipes = null;
     TextView tvView;
     TextView tvView2;
     @Override
@@ -69,7 +51,8 @@ public class RecipesActivity extends Activity {
         textView.setText(message);
 
         // Set the text view as the activity layout
-        setContentView(R.layout.actualpage);
+        setContentView(R.layout.activity_recipes);
+        new JSONParse().execute();
         //tvView2 = (TextView) findViewById(R.id.textView2);
         //Intent intent = getIntent();
 
@@ -122,6 +105,67 @@ public class RecipesActivity extends Activity {
 
         //System.out.println(result);
 
+    }
+    private class JSONParse extends AsyncTask<String, String, JSONObject> {
+        private ProgressDialog pDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            name = (TextView) findViewById(R.id.textName);
+            pDialog = new ProgressDialog(RecipesActivity.this);
+            pDialog.setMessage("Getting Data ...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... args) {
+            JSONParser jParser = new JSONParser();
+            // Getting JSON from URL
+            JSONObject json = jParser.getJSONFromUrl(url);
+            return json;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject json) {
+            pDialog.dismiss();
+            try {
+                // Getting JSON Array from URL
+                recipes = json.getJSONObject("recipes");
+                Iterator<String> iter = recipes.keys();
+                while (iter.hasNext()) {
+                    String name = iter.next();
+                    //JSONObject c = recipes.getJSONObject(i);
+                    // Storing  JSON item in a Variable
+                    //String name = c.;
+                    //String image_url = c.getString("image_url");
+                    // Adding value HashMap key => value
+                    HashMap<String, String> map = new HashMap<String, String>();
+                    map.put("name", name);
+                    //map.put("image_url", image_url);
+
+                    //new ImageDownloader(icon).execute(image_url);
+                    thelist.add(map);
+                    list = (ListView) findViewById(R.id.listView);
+                    ListAdapter adapter = new SimpleAdapter(RecipesActivity.this, thelist,
+                            R.layout.row_listitem,
+                            new String[]{"name"/*, "image_url"*/}, new int[]{
+                            R.id.textName});
+                    list.setAdapter(adapter);
+                    list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view,
+                                                int position, long id) {
+                            Toast.makeText(RecipesActivity.this, "You Clicked at " + thelist.get(+position).get("name"), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 
