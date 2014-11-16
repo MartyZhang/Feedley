@@ -61,7 +61,7 @@
             android:layout_gravity="top"
             android:paddingTop="0dp"
             android:layout_marginTop="4dp"
-            android:layout_marginRight="5dp" />
+            android:layout_marginRight="10dp" />
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="60dp"
@@ -77,7 +77,7 @@
             android:layout_marginTop="-5dp"
             android:paddingBottom="2dp"
             android:layout_marginBottom="0dp"
-            android:layout_marginRight="5dp" />
+            android:layout_marginRight="10dp" />
     </LinearLayout>
     <ListView
         android:layout_width="wrap_content"

@@ -79,7 +79,8 @@
                 android:adjustViewBounds="false"
                 android:baselineAlignBottom="false"
                 android:background="@android:color/transparent"
-                android:paddingRight="5dp" />
+                android:paddingRight="5dp"
+                android:layout_marginRight="10dp" />
 
 
 

@@ -7,7 +7,10 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -44,6 +47,15 @@ public class RecipesActivity extends Activity {
     JSONArray recipes = null;
     TextView tvView;
     TextView tvView2;
+
+    private static final String[] INGREDIENTS = new String[] {
+            "Tomato", "Bread", "Milk", "Flour", "Chicken", "Meat", "Pizza", "Broccoli", "Steak",
+            "Beef", "Coriander", "Parsley", "Salt", "Pepper", "Flour", "Pasta", "Penne", "Tortellini",
+            "Spaghetti", "Macaroni", "Noodles", "Rice", "Pork", "Sausage", "Onion", "Spinach", "Cucumber",
+            "Lemon", "Garlic", "Ground meat", "Eggs", "Tomato Sauce", "Lettuce", "Banana", "Peanut Butter",
+            "Duck", "Lamb", "Salmon", "Tilapia", "Tuna", "Cod", "Trout", "Oysters", "Mushrooms", "Ketchup", "Mustard", "Mayo",
+            "Cheese", "Celery", "Tortilla", "Pita", "Olive oil", "Apple", "Oranges", "Grapefruit"
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
@@ -67,6 +79,20 @@ public class RecipesActivity extends Activity {
         TextView txt = (TextView) findViewById(R.id.custom_font);
         Typeface font = Typeface.createFromAsset(getAssets(), "LeckerliOne_Regular.otf");
         txt.setTypeface(font);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                R.layout.dropdownstyle, INGREDIENTS);
+
+        // final AutoCompleteTextView textView = (AutoCompleteTextView)
+        AutoCompleteTextView textView2 = (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView2);
+        textView2.setAdapter(adapter);
+
+
+        // set focus to it
+        textView2.requestFocus();
+        textView2.requestFocus();
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(textView2, InputMethodManager.SHOW_IMPLICIT);
         new JSONParse(this).execute();
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
