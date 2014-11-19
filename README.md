@@ -5,6 +5,7 @@ Feedley
 3. Setup mongolDB database
 
 Backendcrap:
+========================
 1. Fix search bug on p2
 2. Create dynamic listview for ingredients
 3. Add categories, top rated, ect
