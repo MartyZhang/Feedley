@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -63,7 +64,6 @@ public class RecipesActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             value = extras.getString("inputIngredients");
@@ -93,9 +93,7 @@ public class RecipesActivity extends Activity {
         AutoCompleteTextView textView2 = (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView2);
         textView2.setAdapter(adapter);
 
-
         // set focus to it
-        textView2.requestFocus();
         textView2.requestFocus();
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(textView2, InputMethodManager.SHOW_IMPLICIT);
@@ -104,7 +102,7 @@ public class RecipesActivity extends Activity {
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
                 .build();
         ImageLoader.getInstance().init(config);
-        ImageView searchThing = (ImageView) findViewById(R.id.imagePreview2);
+        final ImageView searchThing = (ImageView) findViewById(R.id.imagePreview2);
 
         searchThing.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,10 +116,22 @@ public class RecipesActivity extends Activity {
                 EditText editText = (EditText) findViewById(R.id.autoCompleteTextView2);
                 String message = editText.getText().toString();
 
-                intent.putExtra("inputIngredients", value+","+message);
+                intent.putExtra("inputIngredients", value+","+message.replace(" ", "%20"));
                 //intent.putExtra("input", textView.getText());
                 //intent.putExtra("input", "Tomato");
                 startActivity(intent);
+            }
+        });
+
+       textView2.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    searchThing.callOnClick();
+
+                }
+                return false;
             }
         });
 

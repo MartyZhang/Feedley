@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -25,13 +27,14 @@ public class SearchActivity extends Activity implements OnClickListener{
 
     Button btnStartAnotherActivity;
     AutoCompleteTextView textView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_search);
 
-        ImageView searchThing= (ImageView)findViewById(R.id.imagePreview);
+        final ImageView searchThing= (ImageView)findViewById(R.id.imagePreview);
 
         searchThing.setOnClickListener(new OnClickListener() {
             @Override
@@ -73,28 +76,22 @@ public class SearchActivity extends Activity implements OnClickListener{
 
         // set focus to it
         textView.requestFocus();
-        textView.requestFocus();
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(textView, InputMethodManager.SHOW_IMPLICIT);
         TextView txt = (TextView) findViewById(R.id.custom_font);
         Typeface font = Typeface.createFromAsset(getAssets(), "LeckerliOne_Regular.otf");
         txt.setTypeface(font);
+        textView.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                   searchThing.callOnClick();
 
-
-//        textView.setOnKeyListener(new OnKeyListener() {
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                // If the event is a key-down event on the "enter" button
-//                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-//                        (keyCode == KEYCODE_ENTER)) {
-//                    // Perform action on key press
-//                    Toast.makeText(SearchActivity.this, textView.getText(), Toast.LENGTH_SHORT).show();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-
-
+                }
+                return false;
+            }
+        });
 
     }
 
