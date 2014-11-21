@@ -46,7 +46,7 @@ public class RecipesActivity extends Activity {
     ArrayList<JSONObject> theList;
 
     ImageLoader imgLoader;
-    private static String url = "http://foodley.herokuapp.com/getrecipes?items=";
+    private static String url = "http://feedley.herokuapp.com/getrecipes?items=";
     String value=null;
     JSONArray recipes = null;
     TextView tvView;
