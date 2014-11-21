@@ -5,7 +5,7 @@
 # PUT: Update info
 # DELETE: Delete info
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from lxml import html
 import requests
 import urllib2
@@ -52,6 +52,10 @@ def get_recipe_allrecipe(request, title):
         recipe_formatted.append(instruction)
 
     return {'ingredients': ingredients_formatted, 'recipe': recipe_formatted}
+
+@app.route('/')
+def main():
+    return render_template('index.html')
 
 '''
     Send a response via GET request
