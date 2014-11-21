@@ -5,16 +5,17 @@
 # PUT: Update info
 # DELETE: Delete info
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from lxml import html
 import requests
 import urllib2
 import json
 import os
 import config
-import re
 
 app = Flask(__name__)
+
+apiKEY = '0c25d304894f3e6d646227454280b8fe'
 
 
 PORT=int(os.environ.get('PORT', 5000))
@@ -52,6 +53,10 @@ def get_recipe_allrecipe(request, title):
 
     return {'ingredients': ingredients_formatted, 'recipe': recipe_formatted}
 
+@app.route('/')
+def main():
+    return render_template('index.html')
+
 '''
     Send a response via GET request
 '''
@@ -61,7 +66,7 @@ def get_recipes():
     response = request.args.get('items')
     items = str(response)
     # append API key and items to food2fork API URL
-    url = 'http://food2fork.com/api/search?key='+config.apiKEY+'&q='+items
+    url = 'http://food2fork.com/api/search?key='+apiKEY+'&q='+items
 
     # retrieve JSON Data
     json_data = json.load(urllib2.urlopen(url))
