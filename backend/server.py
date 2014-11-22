@@ -12,6 +12,7 @@ import urllib2
 import json
 import os
 import config
+import ujson # FASTER JSON YO
 
 app = Flask(__name__)
 
@@ -37,7 +38,6 @@ def remove_properties(data):
     Only get recipes from allrecipes using webscraper.py
 '''
 def get_recipe_allrecipe(request, title):
-
     page = requests.get(request[title]['source_url'])
     tree = html.fromstring(page.text)
     ingredients_formatted = []
@@ -69,13 +69,18 @@ def get_recipes():
     url = 'http://food2fork.com/api/search?key='+apiKEY+'&q='+items
 
     # retrieve JSON Data
-    json_data = json.load(urllib2.urlopen(url))
-    # format json data and remove unecessary properties
-    formatted_data = remove_properties(json_data)
+    json_data = ujson.load(urllib2.urlopen(url))
+
+    unwanted_properties = ['f2f_url', 'publisher', 'publisher_url', 'social_rank']
 
     # create new list with recipe instructions
     recipes = []
-    for recipe in formatted_data['recipes']:
+    for recipe in json_data['recipes']:
+
+        # Delete unwanted information
+        for j in unwanted_properties:
+            del recipe[j]
+
         if "allrecipes" in recipe['source_url']:
             image_and_source = {
                 recipe['title']:
