@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:background="#0fb2d7cf"
     android:textSize="9pt"
+    android:scrollbarSize="0dp"
     android:fontFamily="Roboto Thin"
     android:textColor="#3BB9FF"
     android:gravity="center_vertical"

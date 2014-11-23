@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="wrap_content"
+    android:layout_height="40dp"
+    android:padding="0dp"
+    android:paddingTop="5dp">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:background="@drawable/border_radius_bubble"
+        android:padding="0dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp">
+        <TextView
+            android:id="@+id/ingredient_bubble"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:textSize="18dp"
+            android:text="ingredient_here"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:paddingLeft="7dp" />
+        <LinearLayout
+            android:layout_width="25dp"
+            android:layout_height="fill_parent"
+            android:background="@drawable/border_radius_dark"
+            android:layout_marginLeft="5dp">
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@drawable/x"
+                android:clickable="true"
+                android:onClick="removeView"
+                android:layout_gravity="center" />
+        </LinearLayout>
+    </LinearLayout>
+    <Space
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="2sp"
+        />
+</LinearLayout>
