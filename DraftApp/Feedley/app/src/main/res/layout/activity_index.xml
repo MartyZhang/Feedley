@@ -40,6 +40,18 @@
             android:layout_marginLeft="35dp"
             android:layout_marginRight="35dp"
             android:baselineAligned="false">
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:id="@+id/addIngredient"
+                android:src="@drawable/ic_action_search"
+                android:clickable="true"
+                android:onClick="addIngredient"
+                android:baselineAlignBottom="false"
+                android:background="@android:color/transparent"
+                android:layout_marginRight="0dp"
+                android:layout_marginLeft="0dp"
+                android:paddingLeft="7dp" />
             <AutoCompleteTextView
                 android:textCursorDrawable="@drawable/cursorp1"
                 android:id="@+id/search_bar"
@@ -68,15 +80,16 @@
                 />
             <ImageButton
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:id="@+id/addIngredient"
-                android:src="@drawable/ic_action_search"
+                android:layout_height="30dp"
+                android:id="@+id/search"
+                android:src="@drawable/ic_action_search2"
                 android:clickable="true"
-                android:onClick="addIngredient"
+                android:onClick="search"
                 android:baselineAlignBottom="false"
                 android:background="@android:color/transparent"
                 android:paddingRight="5dp"
-                android:layout_marginRight="10dp" />
+                android:layout_marginRight="5dp"
+                android:layout_gravity="center" />
 
         </LinearLayout>
 
@@ -92,16 +105,5 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1"/>
-        <TextView
-            android:id="@+id/look"
-            android:background="@drawable/border_radius_black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#ffffff"
-            android:text="Look for recipes!"
-            android:textSize="18dp"
-            android:clickable="true"
-            android:onClick="search"
-            android:layout_gravity="center_horizontal" />
     </LinearLayout>
 </RelativeLayout>

@@ -15,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,10 +45,8 @@ public class Index extends Activity implements OnClickListener {
 
         //setLogoFont
         TextView txt1 = (TextView) findViewById(R.id.feedley_logo);
-        TextView txt2 = (TextView) findViewById(R.id.look);
         Typeface font = Typeface.createFromAsset(getAssets(), "LeckerliOne_Regular.otf");
         txt1.setTypeface(font);
-        txt2.setTypeface(font);
 
         //setAutoCompleteTextView
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -67,7 +64,6 @@ public class Index extends Activity implements OnClickListener {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     add.callOnClick();
-
                 }
                 return false;
             }
@@ -81,28 +77,22 @@ public class Index extends Activity implements OnClickListener {
         add = (ImageView) findViewById(R.id.addIngredient);
         searchBar = (AutoCompleteTextView) findViewById(R.id.search_bar);
         Layout = (HorizontalFlowLayout) findViewById(R.id.horizontalView);
-        container = (LinearLayout)findViewById(R.id.container);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) container.getLayoutParams();
-
-        params.setMargins(0,200,0,0);
-        container.setLayoutParams(params);
-        Fx.slide_up(this, container);
-        //hide keyboard
         InputMethodManager inputManager = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
 
-        String ingredient = searchBar.getText().toString().substring(0, 1).toUpperCase()
-                + searchBar.getText().toString().substring(1).toLowerCase();
-
-        if (ingredient.isEmpty()) {
+        if (searchBar.getText().toString().isEmpty()) {
             Context context = getApplicationContext();
             CharSequence text = "Please enter an ingredient";
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
+            return;
         }
+        String ingredient = searchBar.getText().toString().substring(0, 1).toUpperCase()
+                + searchBar.getText().toString().substring(1).toLowerCase();
+
         if (!checkCopies.contains(ingredient.toLowerCase())) {
             View new_view = getLayoutInflater().inflate(R.layout.ingredient_bubble, null);
             TextView add_view = (TextView) new_view.findViewById(R.id.ingredient_bubble);
