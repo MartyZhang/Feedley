@@ -101,6 +101,52 @@ def get_recipes():
 
     return jsonify({'recipes': recipes})
 
+'''
+  Tentative alternative to API key
+  To use: http://localhost:5000/webscrapetest?items=[ITEM1],[ITEM2],[ITEM3]
+'''
+
+@app.route('/webscrapetest')
+def test():
+
+    response = request.args.get('items')
+    items = str(response)
+
+    # Scrape f2f search page
+    url = 'http://food2fork.com/top?q='+items
+    page = requests.get(url)
+    tree = html.fromstring(page.text)
+
+    json_data = []
+
+    titles = tree.xpath('//span[@class="recipe-name"]/text()')
+    images = tree.xpath('//img[@src]')
+    del images[0]
+    del images[0]
+    links = tree.xpath('//a[@class="recipe-link"]')
+
+    for title, image, link in zip(titles,images,links):
+
+      # Scrape f2f recipe page
+      f2f_link = 'http://food2fork.com' + link.attrib['href']
+      f2f_page = requests.get(f2f_link)
+      f2f_tree = html.fromstring(f2f_page.text)
+      ingredients = f2f_tree.xpath('//li[@itemprop="ingredients"]/text()')
+      recipe_url = f2f_tree.xpath("//div[@class='span5 offset1 about-container']/a[contains(text(),'View on')]/@href")
+
+      ingred_instr = []
+      # Scrape actual recipe
+      if "allrecipes" in recipe_url[0]:
+        image_and_source = {
+          title.strip(): {'image_url': image.attrib['src'], 'source_url': recipe_url[0]}
+        }
+        ingred_instr = get_recipe_allrecipe(image_and_source, title.strip())['recipe']
+
+      json_data.append({"title": title.strip(), "image_url": image.attrib['src'], "f2f_url": f2f_link, "ingredients": ingredients, "source_url": recipe_url[0], "recipe": ingred_instr})
+
+    return jsonify({'recipes': json_data})
+
+
 if __name__ == '__main__':
     app.debug=True
     app.run(host='0.0.0.0', port=PORT)
