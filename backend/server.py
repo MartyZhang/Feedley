@@ -124,27 +124,31 @@ def test():
     del images[0]
     del images[0]
     links = tree.xpath('//a[@class="recipe-link"]')
+    recipe_urls = tree.xpath("//span[@class='publisher']/a[@href]/text()")
 
-    for title, image, link in zip(titles,images,links):
+    for recipe_url, title, image, link in zip(recipe_urls, titles,images,links):
 
-      # Scrape f2f recipe page
-      f2f_link = 'http://food2fork.com' + link.attrib['href']
-      f2f_page = requests.get(f2f_link)
-      f2f_tree = html.fromstring(f2f_page.text)
-      ingredients = f2f_tree.xpath('//li[@itemprop="ingredients"]/text()')
-      recipe_url = f2f_tree.xpath("//div[@class='span5 offset1 about-container']/a[contains(text(),'View on')]/@href")
+      # Only scrape two additional pages if recipe is from allrecipes.com
+      if "All Recipes" in recipe_url:
 
-      # Scrape actual recipe webpage
-      ingred_instr = []
-      if "allrecipes" in recipe_url[0]:
+        # Scrape f2f recipe page
+        f2f_link = 'http://food2fork.com' + link.attrib['href']
+        f2f_page = requests.get(f2f_link)
+        f2f_tree = html.fromstring(f2f_page.text)
+        ingredients = f2f_tree.xpath('//li[@itemprop="ingredients"]/text()')
+        source_url = f2f_tree.xpath("//div[@class='span5 offset1 about-container']/a[contains(text(),'View on')]/@href")
+
+        # Scrape actual recipe webpage
+        ingred_instr = []
         image_and_source = {
-          title.strip(): {'image_url': image.attrib['src'], 'source_url': recipe_url[0]}
+          title.strip(): {'image_url': image.attrib['src'], 'source_url': source_url[0]}
         }
         ingred_instr = get_recipe_allrecipe(image_and_source, title.strip())['recipe']
-      else: #Only include allrecipes.com in json for now
-        continue
 
-      json_data.append({"title": title.strip(), "image_url": image.attrib['src'], "f2f_url": f2f_link, "ingredients": ingredients, "source_url": recipe_url[0], "recipe": ingred_instr})
+        json_data.append({"title": title.strip(), "image_url": image.attrib['src'], "f2f_url": f2f_link, "ingredients": ingredients, "source_url": source_url[0], "recipe": ingred_instr})
+
+      else:
+        continue
 
     return jsonify({'recipes': json_data})
 
