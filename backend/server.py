@@ -134,13 +134,15 @@ def test():
       ingredients = f2f_tree.xpath('//li[@itemprop="ingredients"]/text()')
       recipe_url = f2f_tree.xpath("//div[@class='span5 offset1 about-container']/a[contains(text(),'View on')]/@href")
 
+      # Scrape actual recipe webpage
       ingred_instr = []
-      # Scrape actual recipe
       if "allrecipes" in recipe_url[0]:
         image_and_source = {
           title.strip(): {'image_url': image.attrib['src'], 'source_url': recipe_url[0]}
         }
         ingred_instr = get_recipe_allrecipe(image_and_source, title.strip())['recipe']
+      else: #Only include allrecipes.com in json for now
+        continue
 
       json_data.append({"title": title.strip(), "image_url": image.attrib['src'], "f2f_url": f2f_link, "ingredients": ingredients, "source_url": recipe_url[0], "recipe": ingred_instr})
 
